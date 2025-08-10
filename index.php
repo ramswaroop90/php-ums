@@ -89,6 +89,20 @@
                         session_unset();
                         session_destroy();
                     }?>
+
+                    <?php
+                    if(isset($_SESSION['error']))
+                    {
+                        ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <?php echo  $_SESSION['error'] ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <?php
+                        session_unset();
+                        session_destroy();
+                    }?>
+
                     <div class="row align-items-center">
                         <div class="col-lg-6">
                             <div class="home-title mo-mb-20">

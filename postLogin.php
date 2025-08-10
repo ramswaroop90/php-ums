@@ -4,10 +4,17 @@ if(isset($_POST['login']))
 	include_once('connection.php');
 	session_start();
 	$request=(object) $_POST;
+	$email=$request->email;
+	$password=$request->password;
 
-	$query="SELECT *from users where email='".$request->email."' and password='".$request->password."' LIMIT 1;";
-	$result=$conn->query($query);
-	if($result->num_rows>0)
+
+	$stmt = $conn->prepare("SELECT *from users where email=? and password=? LIMIT 1;");
+	$stmt->bind_param("ss", $email, $password);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$stmt->close();
+	$conn->close();
+	if($result->num_rows > 0)
 	{
 		$user=$result->fetch_object();
 		if($user->status)

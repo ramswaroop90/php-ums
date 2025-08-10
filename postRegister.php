@@ -11,6 +11,7 @@ if(isset($_POST['signup']))
 	$email=test_input($_POST['email']);
 	$password=test_input($_POST['password']);
 	$confirm_password=test_input($_POST['confirm_password']);
+
 	$query="SELECT *from users where email='".$email."';";
 	$result=$conn->query($query);
 
@@ -30,11 +31,19 @@ if(isset($_POST['signup']))
 	}
 	else
 	{
-		$query="INSERT into users(name,email,password) values('".$name."','".$email."','".$password."');";
-		$result=$conn->query($query);
+		//$query="INSERT into users(name,email,password) values('".$name."','".$email."','".$password."');";
+		$stmt = $conn->prepare("INSERT INTO users(name,email,password) VALUES(?,?,?)");
+		$stmt->bind_param("sss", $name, $email, $password);
+		$result=$stmt->execute();
+		$stmt->close();
+		$conn->close();
 		if($result)
 		{
 			$_SESSION['success']="User Registered successfully.";
+		}
+		else
+		{
+			$_SESSION['error']="Something went wrong.";
 		}
 	}
 
@@ -45,11 +54,11 @@ else
 	header('Location: index.php');
 }
 
-	function test_input($data)
-	{
-		$data = trim($data);
-		$data = stripslashes($data);
-		$data = htmlspecialchars($data);
-		return $data;
-	}
+function test_input($data)
+{
+	$data = trim($data);
+	$data = stripslashes($data);
+	$data = htmlspecialchars($data);
+	return $data;
+}
 ?>
