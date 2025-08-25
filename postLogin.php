@@ -7,10 +7,10 @@ if(isset($_POST['login']))
 	$email=$request->email;
 	$password=$request->password;
 
-
 	$stmt = $conn->prepare("SELECT *from users where email=? and password=? LIMIT 1;");
 	$stmt->bind_param("ss", $email, $password);
 	$stmt->execute();
+
 	$result = $stmt->get_result();
 	$stmt->close();
 	$conn->close();
@@ -20,7 +20,14 @@ if(isset($_POST['login']))
 		if($user->status)
 		{
 			$_SESSION['auth_user']=$user;
-			header('Location: dashboard.php');
+			if(in_array($user->type, ['admin','support']))
+			{
+				header('Location: admin-dashboard.php');
+			}
+			else
+			{
+				header('Location: customer-dashboard.php');
+			}
 		}
 		else
 		{

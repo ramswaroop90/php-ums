@@ -285,9 +285,19 @@
 
                     <form class="px-3" action="postRegister.php" method="POST">
                         <div class="mb-3">
-                            <label for="username" class="form-label">Name</label>
-                            <input class="form-control" type="text" id="username" name="name" required="" placeholder="Michael Zenaty">
-                            <span class="text-danger" id="name"></span>
+                            <label for="username" class="form-label">First Name</label>
+                            <input class="form-control" type="text" id="username" name="first_name" required="" placeholder="Michael Zenaty">
+                            <?php
+                            if(isset($_SESSION['errors']['first_name']))
+                            {
+                                echo '<span class="text-danger">'.$_SESSION['errors']['first_name'].'</span>';
+                            }
+                            ?>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Last Name</label>
+                            <input class="form-control" type="text" id="username" name="last_name" required="" placeholder="Michael Zenaty">
                         </div>
 
                         <div class="mb-3">

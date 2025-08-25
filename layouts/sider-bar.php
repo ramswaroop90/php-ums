@@ -5,59 +5,64 @@
         <div id="sidebar-menu">
 
             <ul id="side-menu">
-
                 <li>
-                    <a href="#sidebarAdmin" data-bs-toggle="collapse">
+                    <a href="#AdminDashboard" data-bs-toggle="collapse">
                         <i data-feather="users"></i>
                         <span> Admin </span>
                         <span class="menu-arrow"></span>
                     </a>
-                    <div class="collapse" id="sidebarAdmin">
+                    <div class="collapse" id="AdminDashboard">
                         <ul class="nav-second-level">
                             <li>
                                 <a href="users-list.php">Users List</a>
                             </li>
+                            <li>
+                                <a href="customers-list.php">Customers List</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
-
                 <li>
-                    <a href="#sidebarIcons" data-bs-toggle="collapse">
-                        <i data-feather="cpu"></i>
-                        <span> Icons </span>
+                    <a href="#sidebarEcommerce" data-bs-toggle="collapse">
+                        <i data-feather="shopping-cart"></i>
+                        <span> Ecommerce </span>
                         <span class="menu-arrow"></span>
                     </a>
-                    <div class="collapse" id="sidebarIcons">
+                    <div class="collapse" id="sidebarEcommerce">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="icons-two-tone.html">Two Tone Icons</a>
+                                <a href="ecommerce-dashboard.html">Dashboard</a>
                             </li>
                             <li>
-                                <a href="icons-feather.html">Feather Icons</a>
+                                <a href="ecommerce-products.html">Products</a>
                             </li>
                             <li>
-                                <a href="icons-mdi.html">Material Design Icons</a>
+                                <a href="ecommerce-product-detail.html">Product Detail</a>
                             </li>
                             <li>
-                                <a href="icons-dripicons.html">Dripicons</a>
+                                <a href="ecommerce-product-edit.html">Add Product</a>
                             </li>
                             <li>
-                                <a href="icons-font-awesome.html">Font Awesome 5</a>
+                                <a href="ecommerce-customers.html">Customers</a>
                             </li>
                             <li>
-                                <a href="icons-themify.html">Themify</a>
+                                <a href="ecommerce-orders.html">Orders</a>
                             </li>
                             <li>
-                                <a href="icons-simple-line.html">Simple Line</a>
+                                <a href="ecommerce-order-detail.html">Order Detail</a>
                             </li>
                             <li>
-                                <a href="icons-weather.html">Weather</a>
+                                <a href="ecommerce-sellers.html">Sellers</a>
+                            </li>
+                            <li>
+                                <a href="ecommerce-cart.html">Shopping Cart</a>
+                            </li>
+                            <li>
+                                <a href="ecommerce-checkout.html">Checkout</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-
-
             </ul>
 
         </div>
