@@ -40,6 +40,7 @@ if(isset($_SESSION['auth_user']))
 														if(isset($_SESSION['errors']['first_name']))
 														{
 															echo '<span class="text-danger">'.$_SESSION['errors']['first_name'].'</span>';
+															unset($_SESSION['errors']['first_name']);
 														}
 														?>
 													</div>
@@ -56,6 +57,7 @@ if(isset($_SESSION['auth_user']))
 														if(isset($_SESSION['errors']['email']))
 														{
 															echo '<span class="text-danger">'.$_SESSION['errors']['email'].'</span>';
+															unset($_SESSION['errors']['email']);
 														}
 														?>
 													</div>
@@ -67,6 +69,7 @@ if(isset($_SESSION['auth_user']))
 														if(isset($_SESSION['errors']['password']))
 														{
 															echo '<span class="text-danger">'.$_SESSION['errors']['password'].'</span>';
+															unset($_SESSION['errors']['password']);
 														}
 														?>
 													</div>

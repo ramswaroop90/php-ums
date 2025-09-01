@@ -23,6 +23,23 @@
                     </div>
                 </li>
                 <li>
+                    <a href="#productId" data-bs-toggle="collapse">
+                        <i data-feather="users"></i>
+                        <span> Product </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="productId">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="categories-list.php">Categories List</a>
+                            </li>
+                            <li>
+                                <a href="customers-list.php">Products List</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
                     <a href="#sidebarEcommerce" data-bs-toggle="collapse">
                         <i data-feather="shopping-cart"></i>
                         <span> Ecommerce </span>

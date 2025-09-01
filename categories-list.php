@@ -23,10 +23,10 @@ if(isset($_SESSION['auth_user']))
 									<div class="card-header bg-info">
 										<div class="row">
 											<div class="col-md-6">
-												<h3>Support User List</h3>
+												<h3>Categories List</h3>
 											</div>
 											<div class="col-md-6">
-												<a type="button" class="btn btn-danger waves-effect waves-light float-end" href="add-user.php"><i class="mdi mdi-plus-circle me-1"></i> Add Users</a>
+												<a type="button" class="btn btn-danger waves-effect waves-light float-end" href="add-category.php"><i class="mdi mdi-plus-circle me-1"></i> Add Category</a>
 											</div>
 										</div>
 									</div>
@@ -36,9 +36,8 @@ if(isset($_SESSION['auth_user']))
 												<thead>
 													<tr>
 														<th style="width: 20px;">#</th>
-														<th>User</th>
-														<th>Email</th>
-														<th>Mobile</th>
+														<th>Name</th>
+														<th>Name Alias</th>
 														<th>Status</th>
 														<th>Create At</th>
 														<th style="width: 85px;">Action</th>
@@ -46,45 +45,39 @@ if(isset($_SESSION['auth_user']))
 												</thead>
 												<tbody>
 													<?php
-													$query="SELECT *from users where type ='support';";
-													$users = $conn->query($query);
-													if ($users->num_rows > 0)
+													$query="SELECT *from categories;";
+													$categories = $conn->query($query);
+													if ($categories->num_rows > 0)
 													{
 														$index=1;
-														while($user = $users->fetch_object())
+														while($category = $categories->fetch_object())
 														{
 															?>
 															<tr>
 																<td><?php echo $index++; ?></td>
 																<td class="table-user">
 																	<img src="assets/images/users/user-4.jpg" alt="table-user" class="me-2 rounded-circle">
-																	<a href="javascript:void(0);" class="text-body fw-semibold"><?php echo $user->first_name.' '.$user->last_name ?></a>
+																	<a href="javascript:void(0);" class="text-body fw-semibold"><?php echo $category->name ?></a>
 																</td>
 																<td>
-																	<?php echo $user->email ?>
-																</td>
-																<td>
-																	<?php echo $user->mobile ?? '+91-XXXXXXXXXX' ?>
+																	<?php echo $category->name_alias ?>
 																</td>
 																<td>
 																	<?php
-																	if($user->status)
+																	if($category->status)
 																	{
-																		echo '<a href="change-status.php?id='.$user->id.'"><span class="badge bg-success text-white rounded-pill px-1">Active</span></a>';
+																		echo '<a href="change-category-status.php?id='.$category->id.'" onclick="return confirm("Are you sure to Activate this category?")"><span class="badge bg-success text-white rounded-pill px-1">Active</span></a>';
 																	}
 																	else
 																	{
-																		echo '<a href="change-status.php?id='.$user->id.'"><span class="badge bg-danger text-danger rounded-pill px-1">Inactive</span></a>';
+																		echo '<a href="change-category-status.php?id='.$category->id.'" onclick="return confirm("Are you sure to Deactivate this category?")"><span class="badge bg-danger text-white rounded-pill px-1">Inactive</span></a>';
 																	}
 																	?>
-
 																</td>
+																<td>30-Aug-2025</td>
 																<td>
-																	07/07/2018
-																</td>
-																<td>
-																	<a href="edit-user.php?id=<?php echo $user->id; ?>" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-																	<a href="delete-user.php?id=<?php echo $user->id; ?>" class="action-icon" onclick="return confirm('Are you sure to delete this user?')"> <i class="mdi mdi-delete"></i></a>
+																	<a href="edit-category.php?id=<?php echo $category->id; ?>" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+																	<a href="delete-category.php?id=<?php echo $category->id; ?>" class="action-icon" onclick="return confirm('Are you sure to delete this category?')"> <i class="mdi mdi-delete"></i></a>
 																</td>
 															</tr>
 															<?php
