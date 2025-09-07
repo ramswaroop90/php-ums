@@ -76,7 +76,7 @@ if(isset($_SESSION['auth_user']))
 																	New York
 																</td>
 																<td>
-																	07/07/2018
+																	<?php echo  $user->created_at;?>
 																</td>
 																<td>
 																	<?php

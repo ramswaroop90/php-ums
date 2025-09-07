@@ -2,6 +2,21 @@
 session_start();
 include_once('connection.php');
 
+$query="SELECT *from users where type ='support'";
+$total_users = $conn->query($query);
+$pages=0;
+$total_records=0;
+$records_per_page=4;
+$page_no=isset($_GET['page']) && $_GET['page']>=1 ? $_GET['page'] : 1;
+$offset=0;
+
+if ($total_users->num_rows > 0)
+{
+	$total_records=$total_users->num_rows;
+	$total_pages=ceil($total_records/$records_per_page);
+	$offset = ($page_no-1) * $records_per_page;
+}
+
 if(isset($_SESSION['auth_user']))
 {
 	?>
@@ -46,16 +61,20 @@ if(isset($_SESSION['auth_user']))
 												</thead>
 												<tbody>
 													<?php
-													$query="SELECT *from users where type ='support';";
+													$query="SELECT *from users where type ='support' LIMIT $offset, $records_per_page";
 													$users = $conn->query($query);
 													if ($users->num_rows > 0)
 													{
-														$index=1;
+
 														while($user = $users->fetch_object())
 														{
 															?>
 															<tr>
-																<td><?php echo $index++; ?></td>
+																<td>
+																	<div class="form-check">
+																		<input type="checkbox" class="form-check-input" id="customCheck2">
+																	</div>
+																</td>
 																<td class="table-user">
 																	<img src="assets/images/users/user-4.jpg" alt="table-user" class="me-2 rounded-circle">
 																	<a href="javascript:void(0);" class="text-body fw-semibold"><?php echo $user->first_name.' '.$user->last_name ?></a>
@@ -80,7 +99,7 @@ if(isset($_SESSION['auth_user']))
 
 																</td>
 																<td>
-																	07/07/2018
+																	<?php echo  $user->created_at;?>
 																</td>
 																<td>
 																	<a href="edit-user.php?id=<?php echo $user->id; ?>" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
@@ -98,6 +117,36 @@ if(isset($_SESSION['auth_user']))
 												</tbody>
 											</table>
 										</div>
+										<?php
+										if($total_pages>1)
+										{
+											?>
+											<ul class="pagination pagination-rounded justify-content-end mb-0">
+												<li class="page-item">
+													<a class="page-link" href="?page=<?php echo ($page_no-1) ?>" aria-label="Previous">
+														<span aria-hidden="true">«</span>
+														<span class="visually-hidden">Previous</span>
+													</a>
+												</li>
+												<?php
+												for($i=1;$i<=$total_pages; $i++)
+												{
+													$active=$page_no==$i ? 'active':'';
+													echo '<li class="page-item '.$active.'"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
+												}
+												?>
+												<li class="page-item">
+													<a class="page-link" href="?page=<?php echo ($page_no+1) ?>" aria-label="Next">
+														<span aria-hidden="true">»</span>
+														<span class="visually-hidden">Next</span>
+													</a>
+												</li>
+											</ul>
+											<?php
+										}
+										?>
+
+
 									</div>
 								</div>
 							</div>

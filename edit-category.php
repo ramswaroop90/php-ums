@@ -2,6 +2,17 @@
 session_start();
 include_once('connection.php');
 
+
+$category_id=$_GET['id'];
+
+$stmt = $conn->prepare("SELECT *from categories where id=?");
+$stmt->bind_param("i", $category_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$stmt->close();
+$category=$result->fetch_object();
+
+
 if(isset($_SESSION['auth_user']))
 {
 	?>
@@ -22,7 +33,7 @@ if(isset($_SESSION['auth_user']))
 									<div class="card-header bg-info">
 										<div class="row">
 											<div class="col-md-6">
-												<h3>Add Category Details</h3>
+												<h3>Edit Category Details</h3>
 											</div>
 											<div class="col-md-6">
 												<a type="button" class="btn btn-secondary waves-effect waves-light float-end" href="categories-list.php"><i class="mdi mdi-plus-circle me-1"></i> Back</a>
@@ -32,10 +43,11 @@ if(isset($_SESSION['auth_user']))
 									<div class="card-body">
 										<div class="row d-flex justify-content-center">
 											<div class="col-md-6">
+
 												<form class="px-3" action="save-category.php" method="POST" enctype="multipart/form-data">
 													<div class="mb-3">
 														<label class="form-label">Name</label>
-														<input class="form-control" type="text" name="name" required="" placeholder="Type Category Name">
+														<input class="form-control" type="text" name="name" value="<?php echo $category->name; ?>" required="" placeholder="Type Category Name">
 														<?php
 														if(isset($_SESSION['errors']['name']))
 														{
@@ -49,8 +61,12 @@ if(isset($_SESSION['auth_user']))
 														<label class="form-label">Status</label>
 														<select class="form-control" name="status">
 															<option value="">--Select--</option>
-															<option value="1">Active</option>
-															<option value="0">Inactive</option>
+															<?php
+															$selected=$category->status ? 'selected' : '';
+															$notselected=!$category->status ? 'selected' : '';
+															?>
+															<option <?php echo $selected ?>  value="1">Active</option>
+															<option <?php echo $notselected ?>  value="0">Inactive</option>
 														</select>
 														<?php
 														if(isset($_SESSION['errors']['status']))
@@ -70,10 +86,12 @@ if(isset($_SESSION['auth_user']))
 															$categories = $conn->query($query);
 															if ($categories->num_rows > 0)
 															{
-																while($category = $categories->fetch_object())
+																while($list_category = $categories->fetch_object())
 																{
+																	$selected=$list_category->id==$category->parent_id ? 'selected' : '';
+
 																	?>
-																	<option value="<?php echo $category->id;?>"><?php echo $category->name ?></option>
+																	<option <?php echo $selected;?> value="<?php echo $list_category->id;?>"><?php echo $list_category->name ?></option>
 																	<?php
 																}
 															}

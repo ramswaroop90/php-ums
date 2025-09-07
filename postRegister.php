@@ -37,8 +37,11 @@ if(isset($_POST['signup']))
 	}
 	else
 	{
-		$stmt = $conn->prepare("INSERT INTO users(first_name,last_name,email,password) VALUES(?,?,?,?)");
-		$stmt->bind_param("ssss", $first_name, $last_name, $email, $password);
+		date_default_timezone_set("UTC");
+		$date=date("Y-m-d H:i:s");
+
+		$stmt = $conn->prepare("INSERT INTO users(first_name,last_name,email,password,created_at,updated_at) VALUES(?,?,?,?,?,?)");
+		$stmt->bind_param("ssssss", $first_name, $last_name, $email, $password,$date,$date);
 		$result=$stmt->execute();
 		$stmt->close();
 		$conn->close();

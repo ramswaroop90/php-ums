@@ -39,8 +39,11 @@ if(isset($_POST['save-user']))
 	}
 	else
 	{
-		$stmt = $conn->prepare("INSERT INTO users(first_name,last_name,email,password,type) VALUES(?,?,?,?,?)");
-		$stmt->bind_param("sssss", $first_name, $last_name, $email, $password,$type);
+		date_default_timezone_set("UTC");
+		$date=date("Y-m-d H:i:s");
+
+		$stmt = $conn->prepare("INSERT INTO users(first_name,last_name,email,password,type,created_at,updated_at) VALUES(?,?,?,?,?,?,?)");
+		$stmt->bind_param("sssssss", $first_name, $last_name, $email, $password,$type,$date,$date);
 		$result=$stmt->execute();
 		$stmt->close();
 		$conn->close();

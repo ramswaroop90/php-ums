@@ -1,26 +1,32 @@
 <?php
 
-
 if(isset($_POST['save-category']))
 {
 	include_once('connection.php');
 	session_start();
 	$name = $status = $image="";
-
 	$errors=array();
 	$name=test_input($_POST['name']);
 	$status=test_input($_POST['status']);
+	$parent_id=test_input($_POST['parent_id']);
 	$image_name=$_FILES["image"]["name"];
-	$extension = substr($image_name,strlen($image_name)-4,strlen($image_name));
-	if(!in_array($extension,[".jpg","jpeg",".png",".gif"]))
+	$image=NULL;
+
+	if($image_name && !$parent_id)
 	{
-		$errors['image']='Only .jpeg, .png, .gif, .jpg.';
+		$extension = substr($image_name,strlen($image_name)-4,strlen($image_name));
+		if(!in_array($extension,[".jpg","jpeg",".png",".gif"]))
+		{
+			$errors['image']='Only .jpeg, .png, .gif, .jpg.';
+		}
+		else
+		{
+			$image='image'.time().$extension;
+			move_uploaded_file($_FILES["image"]["tmp_name"],"uploads/categories/".$image);
+		}
 	}
-	else
-	{
-		$image='image'.time().$extension;
-		move_uploaded_file($_FILES["image"]["tmp_name"],"uploads/categories/".$image);
-	}
+
+
 
 	if(is_null($name))
 	{
@@ -36,7 +42,7 @@ if(isset($_POST['save-category']))
 		$errors['name']='Name already exists';
 	}
 
-   if(is_null($status))
+	if(is_null($status))
 	{
 		$errors['status']='Status is required.';
 	}
@@ -49,8 +55,8 @@ if(isset($_POST['save-category']))
 	}
 	else
 	{
-		$stmt = $conn->prepare("INSERT INTO categories(name,name_alias,status,image) VALUES(?,?,?,?)");
-		$stmt->bind_param("ssis", $name,$name,$status,$image);
+		$stmt = $conn->prepare("INSERT INTO categories(name,name_alias,status,parent_id,image) VALUES(?,?,?,?,?)");
+		$stmt->bind_param("ssiss", $name,$name,$status,$parent_id,$image);
 		$result=$stmt->execute();
 		$stmt->close();
 		$conn->close();
@@ -62,7 +68,7 @@ if(isset($_POST['save-category']))
 		{
 			$_SESSION['error']="Something went wrong.";
 		}
-		header('Location: add-category.php');
+		header('Location: categories-list.php');
 	}
 }
 else

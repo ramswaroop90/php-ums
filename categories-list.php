@@ -56,7 +56,7 @@ if(isset($_SESSION['auth_user']))
 															<tr>
 																<td><?php echo $index++; ?></td>
 																<td class="table-user">
-																	<img src="assets/images/users/user-4.jpg" alt="table-user" class="me-2 rounded-circle">
+																	<img src="uploads/<?php echo $category->image; ?>" alt="table-user" class="me-2 rounded-circle">
 																	<a href="javascript:void(0);" class="text-body fw-semibold"><?php echo $category->name ?></a>
 																</td>
 																<td>
