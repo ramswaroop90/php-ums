@@ -9,9 +9,9 @@ if(isset($_POST['save-category']))
 	$name=test_input($_POST['name']);
 	$status=test_input($_POST['status']);
 	$parent_id=test_input($_POST['parent_id']);
+
 	$image_name=$_FILES["image"]["name"];
 	$image=NULL;
-
 	if($image_name && !$parent_id)
 	{
 		$extension = substr($image_name,strlen($image_name)-4,strlen($image_name));
@@ -21,7 +21,7 @@ if(isset($_POST['save-category']))
 		}
 		else
 		{
-			$image='image'.time().$extension;
+			$image='user_'.time().$extension;
 			move_uploaded_file($_FILES["image"]["tmp_name"],"uploads/categories/".$image);
 		}
 	}

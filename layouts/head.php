@@ -19,8 +19,6 @@
 
         <link href="assets/css/config/default/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
         <link href="assets/css/config/default/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
-
-        <!-- icons -->
         <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-
+        <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
     </head>
