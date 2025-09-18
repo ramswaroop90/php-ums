@@ -29,7 +29,16 @@ if(isset($_SESSION['auth_user']))
 							<div class="col-lg-4 col-xl-4">
 								<div class="card text-center">
 									<div class="card-body">
-										<img src="assets/images/users/user-1.jpg" class="rounded-circle img-thumbnail profile-image" alt="profile-image">
+										<?php
+										if (!empty($user->profile_image))
+										{
+											echo '<img src="uploads/' . htmlspecialchars($user->profile_image) . '" class="rounded-circle img-thumbnail profile-image" alt="profile-image" id="imagePreview">';
+										}
+										else
+										{
+											echo '<img src="assets/images/defualt-user.jpg" class="rounded-circle img-thumbnail profile-image" alt="profile-image" id="imagePreview">';
+										}
+										?>
 
 										<h4 class="mb-0">Geneva McKnight</h4>
 										<p class="text-muted">@webdesigner</p>
@@ -137,7 +146,7 @@ if(isset($_SESSION['auth_user']))
 												<div class="col-md-12">
 													<div class="mb-1">
 														<label class="form-label">Profile Image</label>
-														<input type="file" class="form-control" name="profile_image">
+														<input type="file" class="form-control" name="profile_image" id="imageInput">
 													</div>
 												</div>
 											</div>
@@ -156,6 +165,22 @@ if(isset($_SESSION['auth_user']))
 		</div>
 
 		<?php include 'layouts/scripts.php'; ?>
+		<script type="text/javascript">
+			document.getElementById('imageInput').addEventListener('change', function(event) {
+				const input = event.target;
+
+				if (input.files && input.files[0]) {
+					const reader = new FileReader();
+
+					reader.onload = function(e) {
+						const img = document.getElementById('imagePreview');
+						img.src = e.target.result;
+						img.style.display = 'block';
+					};
+					reader.readAsDataURL(input.files[0]);
+				}
+			});
+		</script>
 
 
 	</body>
@@ -167,6 +192,8 @@ else
 {
 	header('Location: index.php');
 }
+
+
 
 ?>
 

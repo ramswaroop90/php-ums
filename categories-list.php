@@ -38,6 +38,7 @@ if(isset($_SESSION['auth_user']))
 														<th style="width: 20px;">#</th>
 														<th>Name</th>
 														<th>Name Alias</th>
+														<th>Parent Category</th>
 														<th>Status</th>
 														<th>Create At</th>
 														<th style="width: 85px;">Action</th>
@@ -56,11 +57,32 @@ if(isset($_SESSION['auth_user']))
 															<tr>
 																<td><?php echo $index++; ?></td>
 																<td class="table-user">
-																	<img src="uploads/<?php echo $category->image; ?>" alt="table-user" class="me-2 rounded-circle">
+																	<?php
+																	if (!empty($category->image))
+																	{
+																		echo '<img src="uploads/categories/' . htmlspecialchars($category->image) . '" alt="no-image" class="me-2">';
+																	}
+																	else
+																	{
+																		echo '<img src="assets/images/brands/slack.png" alt="no-image" class="me-2">';
+																	}
+																	?>
 																	<a href="javascript:void(0);" class="text-body fw-semibold"><?php echo $category->name ?></a>
 																</td>
 																<td>
 																	<?php echo $category->name_alias ?>
+																</td>
+																<td>
+																	<?php
+																	if($category->parent_id)
+																	{
+																		$stmt = $conn->prepare("SELECT *from categories where id=$category->parent_id");
+																		$stmt->execute();
+																		$result = $stmt->get_result();
+																		$category=$result->fetch_object();
+																		echo $category->name;
+																	}
+																	?>
 																</td>
 																<td>
 																	<?php

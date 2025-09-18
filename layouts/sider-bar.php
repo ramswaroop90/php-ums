@@ -5,40 +5,43 @@
         <div id="sidebar-menu">
 
             <ul id="side-menu">
-                <li>
-                    <a href="#AdminDashboard" data-bs-toggle="collapse">
-                        <i data-feather="users"></i>
-                        <span> Admin </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <div class="collapse" id="AdminDashboard">
-                        <ul class="nav-second-level">
-                            <li>
-                                <a href="users-list.php">Users List</a>
-                            </li>
-                            <li>
-                                <a href="customers-list.php">Customers List</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a href="#productId" data-bs-toggle="collapse">
-                        <i data-feather="users"></i>
-                        <span> Product </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <div class="collapse" id="productId">
-                        <ul class="nav-second-level">
-                            <li>
-                                <a href="categories-list.php">Categories List</a>
-                            </li>
-                            <li>
-                                <a href="customers-list.php">Products List</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                <?php
+                $query="SELECT *from roles where status=1;";
+                $roles = $conn->query($query);
+                if ($roles->num_rows > 0)
+                {
+                    while($role = $roles->fetch_object())
+                    {
+                        ?>
+                        <li>
+                            <a href="#<?php echo $role->name; ?>Dashboard" data-bs-toggle="collapse">
+                                <i data-feather="<?php echo $role->icon; ?>"></i>
+                                <span> <?php echo $role->name; ?> </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="<?php echo $role->name; ?>Dashboard">
+                                <ul class="nav-second-level">
+
+                                    <?php
+                                    $query="SELECT *from role_menu where role_id=$role->id order by position;";
+                                    $role_menus = $conn->query($query);
+                                    if ($role_menus->num_rows > 0)
+                                    {
+
+                                        while($role_menu = $role_menus->fetch_object())
+                                        {
+
+                                            echo "<li><a href='".$role_menu->url."'>$role_menu->name</a></li>";
+                                        }
+                                    }
+                                    ?>
+                                </ul>
+                            </div>
+                        </li>
+                        <?php
+                    }
+                }
+                ?>
                 <li>
                     <a href="#sidebarEcommerce" data-bs-toggle="collapse">
                         <i data-feather="shopping-cart"></i>
@@ -89,5 +92,4 @@
 
     </div>
     <!-- Sidebar -left -->
-
 </div>

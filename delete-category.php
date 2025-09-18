@@ -11,6 +11,7 @@ if(isset($_SESSION['auth_user']))
 	$stmt->bind_param("i", $category_id);
 	$stmt->execute();
 	$result = $stmt->get_result();
+	$category = $result->fetch_object();
 
 	if($result->num_rows)
 	{
@@ -21,6 +22,11 @@ if(isset($_SESSION['auth_user']))
 		$conn->close();
 		if($result)
 		{
+			$directory="uploads/categories";
+			if ($category->image && file_exists($directory.'/'.$category->image))
+			{
+				unlink($directory.'/'.$category->image);
+			}
 			$_SESSION['success']="Category deleted successfully..";
 		}
 		else

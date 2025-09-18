@@ -5,8 +5,13 @@ session_start();
 if(isset($_SESSION['auth_user']) && isset($_POST['update_profile']))
 {
 	$authuser=(object)$_SESSION['auth_user'];
+	$stmt = $conn->prepare("SELECT *from users where id=?");
+	$stmt->bind_param("i", $authuser->id);
+	$stmt->execute();
+	$user=$stmt->get_result()->fetch_object();
+
 	$errors=array();
-	$user_id=$authuser->id;
+	$user_id=$user->id;
 	$first_name=test_input($_POST['first_name']);
 	$last_name=test_input($_POST['last_name']);
 	$mobile=test_input($_POST['mobile']);
@@ -46,14 +51,27 @@ if(isset($_SESSION['auth_user']) && isset($_POST['update_profile']))
 		}
 		else
 		{
-			$image='user_'.$user_id.$extension;
-			move_uploaded_file($_FILES["profile_image"]["tmp_name"],"uploads/".$image);
+			$profile_image='user_'.$user_id.$extension;
+
+			$directory="uploads/users";
+			if (!file_exists($directory))
+			{
+				mkdir($directory)
+			}
+
+			if ($user->profile_image && file_exists($directory.'/'.$user->profile_image))
+			{
+				unlink('uploads/'.$user->profile_image);
+			}
+
+			move_uploaded_file($_FILES["profile_image"]["tmp_name"],"uploads/".$profile_image);
 		}
 	}
 	else
 	{
-		$image=
+		$profile_image=$user->profile_image;
 	}
+
 
 
 	if(count($errors))
@@ -64,9 +82,8 @@ if(isset($_SESSION['auth_user']) && isset($_POST['update_profile']))
 	else
 	{
 		$stmt = $conn->prepare("UPDATE users SET first_name=?, last_name=?, mobile=?, date_of_birth=?, gender=?, profile_image=? where id=?");
-		$stmt->bind_param("sssssis", $first_name, $last_name, $mobile, $date_of_birth,$gender,$user_id,);
+		$stmt->bind_param("ssssssi", $first_name, $last_name, $mobile, $date_of_birth,$gender,$profile_image,$user_id);
 		$result=$stmt->execute();
-
 		if($result)
 		{
 			$_SESSION['success']="Profile updated successfully.";
